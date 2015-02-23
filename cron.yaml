@@ -1,0 +1,4 @@
+cron:
+- description: testing the cron functionality
+  url: /cron/fetch
+  schedule: every 2 hours
