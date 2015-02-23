@@ -37,7 +37,7 @@
         function listImages(data) {
             data.items.forEach(function(img) {
                 var li = '<li class="col-lg-3 col-sm-4 col-xs-12">' +
-                         '<a href="' + img.url + '" data-lightbox="image-1">' +
+                         '<a href="' + img.url + '" data-lightbox="image">' +
                          '<img class="img-responsive" src="' +
                          img.url + '"/></a></li>';
                 $("#images").append(li);
