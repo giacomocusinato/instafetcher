@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>InstaFetcher</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/lightbox/css/lightbox.css"/>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>InstaFetcher</h1>
+        <p class="lead">Fetching photos from #nban hashtag</p>
+        <ul id="images" class="row list-unstyled">
+
+        </ul>
+    </div>
+    <script src="lib/jquery/jquery-2.1.3.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'https://instafetcher.appspot.com/_ah/api/instafetcher/v1/images',
+                type: 'GET',
+                dataType: 'JSON',
+                contentType: 'application/json',
+                success: function(data) {
+                    listImages(data);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.error("Call list error: " + xhr.status);
+                }
+            })
+        })
+
+        function listImages(data) {
+            data.items.forEach(function(img) {
+                var li = '<li class="col-lg-3 col-sm-4 col-xs-12">' +
+                         '<a href="' + img.url + '" data-lightbox="image">' +
+                         '<img class="img-responsive" src="' +
+                         img.url + '"/></a></li>';
+                $("#images").append(li);
+            });
+        }
+
+    </script>
+</body>
+</html>
