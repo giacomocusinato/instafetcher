@@ -2,21 +2,17 @@ application: instafetcher
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: no
+threadsafe: yes
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-
 - url: /public
-  static_dir: static
+  static_dir: view
 
 - url: /cron/fetch
-  script: main.app
+  script: task.cron.app
 
 - url: /_ah/spi/.*
-  script: instafetcher_api.APPLICATION
+  script: api.instafetcher_api.APPLICATION
 
 libraries:
 - name: webapp2

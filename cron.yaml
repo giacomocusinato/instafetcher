@@ -1,4 +1,4 @@
 cron:
-- description: testing the cron functionality
+- description: fetches the lates Instagram images
   url: /cron/fetch
   schedule: every 2 hours
