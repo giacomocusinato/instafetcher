@@ -5,12 +5,17 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+
+# Just for debugging purpose.
+# Front-end is hosted at http://giacomocusinato.com/instafetcher
 - url: /public
   static_dir: view
 
+# Cron handler
 - url: /cron/fetch
   script: task.cron.app
 
+# Endpoints handler
 - url: /_ah/spi/.*
   script: api.instafetcher_api.APPLICATION
 
