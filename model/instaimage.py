@@ -17,4 +17,4 @@ class PhotoModel(db.Model):
     """
     photo_id = db.StringProperty(indexed=True)
     url = db.StringProperty(indexed=False)
-    date_stored = db.StringProperty(indexed=False)
+    date_stored = db.StringProperty(indexed=True)
