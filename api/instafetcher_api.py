@@ -20,7 +20,6 @@ class Photo(messages.Message):
     id = messages.StringField(1)
     url = messages.StringField(2)
 
-
 class PhotoCollection(messages.Message):
     """Represent the model for a single image in the endpoints."""
     items = messages.MessageField(Photo, 1, repeated=True)
@@ -34,15 +33,15 @@ class InstaFetcherApi(remote.Service):
     the application API.
     """
 
-    # PAGE_RESOURCE = endpoints.ResourceContainer(
-    #     message_types.VoidMessage,
-    #     page=messages.IntegerField(1, variant=messages.Variant.INT32)
-    # )
+    PAGE_RESOURCE = endpoints.ResourceContainer(
+        message_types.VoidMessage,
+        page=messages.IntegerField(1, variant=messages.Variant.INT32)
+    )
 
-    @endpoints.method(message_types.VoidMessage, PhotoCollection,
-                      path='images', http_method='GET',
+    @endpoints.method(PAGE_RESOURCE, PhotoCollection,
+                      path='images/{page}', http_method='GET',
                       name='img.listImages')
-    def image_list(self, unused_request):
+    def image_list(self, request):
         """Gets the photo collection at the given page in the Datastore.
 
         Parameters:
@@ -51,9 +50,12 @@ class InstaFetcherApi(remote.Service):
         Returns:
             The photo collection at the given page in the Datastore.
         """
-        data = db.GqlQuery("SELECT * FROM PhotoModel")
+        query = ("SELECT * FROM PhotoModel " +
+                 "ORDER BY date_stored " +
+                 "LIMIT {l1}, 20").format(l1=request.page * 20)
+        data = db.GqlQuery(query)
         images = list()
-        for img in data.run(limit=20):
+        for img in data.run():
             images.append(Photo(id=img.photo_id, url=img.url))
         return PhotoCollection(items=images)
 
