@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from google.appengine.ext import db
+
+from google.appengine.ext import ndb
+
 
 package = 'instafetcher.model'
 
 
-class PhotoModel(db.Model):
+class PhotoModel(ndb.Model):
     """Model representing an Instagram photo object
      to be stored in the Google Cloud Datastore.
 
@@ -15,6 +17,8 @@ class PhotoModel(db.Model):
         url: url of the photo.
         date_stored: the date on witch the photo was saved.
     """
-    photo_id = db.StringProperty(indexed=True)
-    url = db.StringProperty(indexed=False)
-    date_stored = db.StringProperty(indexed=True)
+    photo_id = ndb.StringProperty(indexed=True)
+    url = ndb.StringProperty(indexed=False)
+    date_stored = ndb.StringProperty(indexed=True)
+    latitude = ndb.FloatProperty(indexed=False)
+    longitude = ndb.FloatProperty(indexed=False)

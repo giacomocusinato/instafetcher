@@ -8,8 +8,10 @@ import endpoints
 from protorpc import messages
 from protorpc import message_types
 from protorpc import remote
-from google.appengine.ext import db
+from google.appengine.ext.ndb import GeoPt
+from google.appengine.ext import ndb
 from model.instaimage import PhotoModel
+
 
 
 package = 'instafetcher.api'
@@ -19,6 +21,9 @@ class Photo(messages.Message):
     """Represent the model for a single image in the endpoints."""
     id = messages.StringField(1)
     url = messages.StringField(2)
+    lon = messages.FloatField(3)
+    lat = messages.FloatField(4)
+
 
 class PhotoCollection(messages.Message):
     """Represent the model for a single image in the endpoints."""
@@ -53,10 +58,11 @@ class InstaFetcherApi(remote.Service):
         query = ("SELECT * FROM PhotoModel " +
                  "ORDER BY date_stored " +
                  "LIMIT {l1}, 20").format(l1=request.page * 20)
-        data = db.GqlQuery(query)
+        data = ndb.gql(query)
         images = list()
-        for img in data.run():
-            images.append(Photo(id=img.photo_id, url=img.url))
+        for img in data.fetch():
+            images.append(Photo(id=img.photo_id, url=img.url,
+                                lon=img.longitude, lat=img.latitude))
         return PhotoCollection(items=images)
 
 APPLICATION = endpoints.api_server([InstaFetcherApi])

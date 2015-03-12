@@ -12,6 +12,8 @@ import datetime
 import logging
 
 from model.instaimage import PhotoModel
+from google.appengine.ext.ndb import GeoPt
+from google.appengine.ext import ndb
 
 package = "instafetcher.task"
 
@@ -38,6 +40,11 @@ class CronHandler(webapp2.RequestHandler):
                 photo.photo_id = img["id"]
                 photo.url = img["images"]["standard_resolution"]["url"]
                 photo.date_stored = datetime.datetime.now().isoformat()
+
+                if img["location"] is not None:
+                    photo.longitude = img["location"]["latitude"]
+                    photo.latitude = img["location"]["longitude"]
+
                 photo.put()
 
     @staticmethod
@@ -52,13 +59,17 @@ class CronHandler(webapp2.RequestHandler):
             A boolean value of True if the PhotoModel with the given
             photo_id is stored in the Datastore, False otherwise.
         """
-        data = PhotoModel.all()
-        data.filter("photo_id =", photo_id)
+        logging.info("Starting already_stored method")
 
-        if data.get() is not None:
-            return True
-        else:
+        data = ndb.gql("SELECT * FROM PhotoModel " +
+                       "WHERE photo_id='{id}'".format(id=photo_id))
+
+        logging.info(data.fetch())
+
+        if data.fetch() == []:
             return False
+        else:
+            return True
 
 
 app = webapp2.WSGIApplication([
