@@ -20,5 +20,5 @@ class PhotoModel(ndb.Model):
     photo_id = ndb.StringProperty(indexed=True)
     url = ndb.StringProperty(indexed=False)
     date_stored = ndb.StringProperty(indexed=True)
-    latitude = ndb.FloatProperty(indexed=False)
-    longitude = ndb.FloatProperty(indexed=False)
+    latitude = ndb.FloatProperty(indexed=True)
+    longitude = ndb.FloatProperty(indexed=True)
