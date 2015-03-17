@@ -17,20 +17,20 @@ $(document).ready(function() {
  * Fetches the images data from the Google Endpoints API.
  * @param api_page
  */
-function fetchImages(page) {
-    $.ajax({
-        url: 'https://instafetcher.appspot.com/_ah/api/instafetcher/v1/images/' + page,
-        type: 'GET',
-        dataType: 'JSON',
-        contentType: 'application/json',
-        success: function(data) {
-            listImages(data);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            console.error("Call list error: " + xhr.status);
-        }
-    })
-}
+    function fetchImages(page) {
+        $.ajax({
+            url: 'https://instafetcher.appspot.com/_ah/api/instafetcher/v1/images/' + page,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json',
+            success: function(data) {
+                listImages(data);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.error("Call list error: " + xhr.status);
+            }
+        })
+    }
 
 /**
  * Parse the image list as JSON and programmatically add the data
