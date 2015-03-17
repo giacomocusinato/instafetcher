@@ -11,7 +11,7 @@ import urllib2
 import datetime
 import logging
 
-from model.instaimage import PhotoModel
+from model.photo_model import PhotoModel
 from google.appengine.ext.ndb import GeoPt
 from google.appengine.ext import ndb
 
